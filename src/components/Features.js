@@ -97,7 +97,7 @@ const Features = () => {
       icon: <FiPieChart />,
       title: 'Reporting & Analytics',
       description: 'Gain valuable insights into your firm's performance with customizable reports and real-time analytics dashboards.'
-    }
+    },
   ];
 
   return (
