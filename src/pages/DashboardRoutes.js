@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import React from 'react';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import DashboardLayout from '../components/dashboard/DashboardLayout';
 import Dashboard from './dashboard/Dashboard';
 import CasesList from './dashboard/CasesList';
@@ -9,8 +9,20 @@ import DocumentManagement from './dashboard/DocumentManagement';
 import Reports from './dashboard/Reports';
 
 const DashboardRoutes = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Clear auth data
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('firmName');
+    
+    // Redirect to home
+    navigate('/');
+  };
+
   return (
-    <DashboardLayout>
+    <DashboardLayout onLogout={handleLogout}>
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/cases/all" element={<CasesList />} />
