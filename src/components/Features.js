@@ -69,31 +69,37 @@ const FeatureDescription = styled.p`
 const Features = () => {
   const featuresData = [
     {
+      id: 'case-management',
       icon: <FiDatabase />,
       title: 'Case Management',
       description: 'Centralize all case information, documents, and communications in one secure location for easy access and management.'
     },
     {
+      id: 'client-communication',
       icon: <FiUsers />,
       title: 'Client Communication',
       description: 'Automate client updates, appointment reminders, and document requests to improve client satisfaction and save time.'
     },
     {
+      id: 'document-management',
       icon: <FiFileText />,
       title: 'Document Management',
       description: 'Store, organize, and share case-related documents securely with built-in HIPAA-compliant document management.'
     },
     {
+      id: 'task-automation',
       icon: <FiCalendar />,
       title: 'Task Automation',
       description: 'Create customizable workflows to automate routine tasks, deadlines, and follow-ups for increased efficiency.'
     },
     {
+      id: 'lead-tracking',
       icon: <FiMessageSquare />,
       title: 'Lead Tracking',
       description: 'Track and manage potential clients from initial contact through case resolution with powerful lead management tools.'
     },
     {
+      id: 'reporting-analytics',
       icon: <FiPieChart />,
       title: 'Reporting & Analytics',
       description: 'Gain valuable insights into your firm's performance with customizable reports and real-time analytics dashboards.'
@@ -105,8 +111,8 @@ const Features = () => {
       <div className="container">
         <SectionTitle>Powerful Features</SectionTitle>
         <FeaturesGrid>
-          {featuresData.map((feature, index) => (
-            <FeatureCard key={index}>
+          {featuresData.map((feature) => (
+            <FeatureCard key={feature.id}>
               <FeatureIcon>{feature.icon}</FeatureIcon>
               <FeatureTitle>{feature.title}</FeatureTitle>
               <FeatureDescription>{feature.description}</FeatureDescription>
