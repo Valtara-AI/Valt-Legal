@@ -102,7 +102,7 @@ const Features = () => {
       id: 'reporting-analytics',
       icon: <FiPieChart />,
       title: 'Reporting & Analytics',
-      description: 'Gain valuable insights into your firm's performance with customizable reports and real-time analytics dashboards.'
+      description: 'Gain valuable insights into your firm\'s performance with customizable reports and real-time analytics dashboards.'
     },
   ];
 
