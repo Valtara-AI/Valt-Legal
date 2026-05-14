@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FiMoon, FiSun } from 'react-icons/fi';
+import { FiMoon, FiSun, FiLogOut } from 'react-icons/fi';
 import { useTheme } from '../styles/ThemeProvider';
+import { useNavigate } from 'react-router-dom';
 
 const HeaderContainer = styled.header`
   background-color: ${props => props.theme.surface};
@@ -45,6 +46,7 @@ const NavLink = styled.a`
   font-weight: 500;
   color: ${props => props.theme.text.primary};
   transition: color 0.3s ease;
+  cursor: pointer;
   
   &:hover {
     color: ${props => props.theme.primary};
@@ -56,6 +58,8 @@ const MobileMenuButton = styled.button`
   background: none;
   font-size: 1.5rem;
   color: ${props => props.theme.text.primary};
+  border: none;
+  cursor: pointer;
   
   @media (max-width: 768px) {
     display: block;
@@ -68,23 +72,29 @@ const ThemeToggle = styled.button`
   justify-content: center;
   margin-left: 2rem;
   background: none;
+  border: none;
   color: ${props => props.theme.text.primary};
   font-size: 1.2rem;
   transition: color 0.3s ease;
+  cursor: pointer;
   
   &:hover {
     color: ${props => props.theme.primary};
   }
 `;
 
-const ActionButton = styled.a`
-  display: inline-block;
+const ActionButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   padding: 0.6rem 1.2rem;
   margin-left: 2rem;
   background-color: ${props => props.theme.primary};
   color: white;
+  border: none;
   border-radius: 4px;
   font-weight: 500;
+  cursor: pointer;
   transition: background-color 0.3s ease;
   
   &:hover {
@@ -92,7 +102,7 @@ const ActionButton = styled.a`
   }
 `;
 
-const Header = () => {
+const Header = ({ onLogout }) => {
   const { isDarkMode, toggleTheme } = useTheme();
   
   return (
@@ -108,10 +118,14 @@ const Header = () => {
             <NavLink href="#pricing">Pricing</NavLink>
             <NavLink href="#testimonials">Testimonials</NavLink>
             <NavLink href="#contact">Contact</NavLink>
-            <ActionButton href="/login">Login</ActionButton>
             <ThemeToggle onClick={toggleTheme}>
               {isDarkMode ? <FiSun /> : <FiMoon />}
             </ThemeToggle>
+            {onLogout && (
+              <ActionButton onClick={onLogout}>
+                <FiLogOut /> Logout
+              </ActionButton>
+            )}
           </NavLinks>
           
           <MobileMenuButton>
