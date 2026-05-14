@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Injury CRM - Reports & Analytics</title>
+    <style>
+        :root {
+            --primary: #6200ee;
+            --secondary: #7c4dff;
+            --background: #121212;
+            --surface: #1e1e1e;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --divider: #2e2e2e;
+            --success: #00c853;
+            --error: #ff5252;
+            --warning: #ffab40;
+            --info: #2196f3;
+            --shadow: rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background-color: var(--surface);
+            padding: 1.5rem;
+            border-right: 1px solid var(--divider);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-menu li {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-menu a {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            background-color: rgba(98, 0, 238, 0.1);
+            color: var(--primary);
+        }
+
+        .nav-menu a.active {
+            background-color: rgba(98, 0, 238, 0.2);
+            color: var(--primary);
+        }
+
+        .nav-menu i {
+            margin-right: 0.75rem;
+        }
+
+        .main-content {
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .page-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.6rem 1.2rem;
+            background-color: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--divider);
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: var(--surface);
+        }
+
+        .button.primary {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+        }
+
+        .button.primary:hover {
+            background-color: var(--secondary);
+        }
+
+        .button i {
+            margin-right: 0.5rem;
+        }
+
+        .filter-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .date-range {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .date-input {
+            padding: 0.6rem 1rem;
+            border-radius: 4px;
+            border: 1px solid var(--divider);
+            background-color: var(--background);
+            color: var(--text-primary);
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--divider);
+            margin-bottom: 2rem;
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            color: var(--text-secondary);
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .tab.active {
+            border-bottom: 2px solid var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .tab:hover {
+            color: var(--primary);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card {
+            background-color: var(--surface);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px var(--shadow);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .chart-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chart-action-button {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--divider);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .chart-action-button:hover {
+            background-color: var(--background);
+            color: var(--primary);
+        }
+
+        .chart-container {
+            height: 300px;
+            position: relative;
+        }
+
+        /* Simulated charts */
+        .chart-bar {
+            display: flex;
+            height: 100%;
+            align-items: flex-end;
+            justify-content: space-around;
+            padding-top: 20px;
+        }
+
+        .bar {
+            width: 30px;
+            background-color: var(--primary);
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            transition: height 0.3s ease;
+        }
+
+        .bar-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .bar-value {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            color: var(--text-primary);
+        }
+
+        .chart-pie {
+            display: flex;
+            height: 100%;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pie {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: conic-gradient(
+                var(--primary) 0% 25%,
+                var(--secondary) 25% 55%,
+                var(--info) 55% 70%,
+                var(--success) 70% 85%,
+                var(--warning) 85% 100%
+            );
+            position: relative;
+        }
+
+        .pie-center {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: var(--surface);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .pie-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-left: 2rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+
+        .legend-text {
+            font-size: 0.9rem;
+        }
+
+        .chart-line {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .line-chart {
+            height: 250px;
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary);
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .line-point {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            transform: translate(-50%, -50%);
+        }
+
+        .line-axis {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .axis-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: var(--surface);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px var(--shadow);
+        }
+
+        .stat-title {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-change {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .stat-change.positive {
+            color: var(--success);
+        }
+
+        .stat-change.negative {
+            color: var(--error);
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        @media (max-width: 992px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle">☀️</button>
+
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">Personal Injury CRM</div>
+            <ul class="nav-menu">
+                <li><a href="#"><i>📊</i> Dashboard</a></li>
+                <li><a href="#"><i>📁</i> Cases</a></li>
+                <li><a href="#"><i>👥</i> Clients</a></li>
+                <li><a href="#"><i>📄</i> Documents</a></li>
+                <li><a href="#"><i>📅</i> Calendar</a></li>
+                <li><a href="#"><i>✉️</i> Messages</a></li>
+                <li><a href="#" class="active"><i>📊</i> Reports</a></li>
+                <li><a href="#"><i>⚙️</i> Settings</a></li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <div class="page-header">
+                <h1 class="page-title">Reports & Analytics</h1>
+                <div class="page-actions">
+                    <button class="button primary"><i>+</i> Create Custom Report</button>
+                    <button class="button"><i>↓</i> Export</button>
+                </div>
+            </div>
+
+            <div class="filter-bar">
+                <div class="date-range">
+                    <span>Date Range:</span>
+                    <input type="date" class="date-input" value="2025-03-01">
+                    <span>to</span>
+                    <input type="date" class="date-input" value="2025-04-17">
+                    <button class="button">Apply</button>
+                </div>
+                <div class="filter-actions">
+                    <select class="button">
+                        <option>All Attorneys</option>
+                        <option>John Doe</option>
+                        <option>Jane Smith</option>
+                    </select>
+                    <select class="button">
+                        <option>All Case Types</option>
+                        <option>Auto Accident</option>
+                        <option>Slip and Fall</option>
+                        <option>Medical Malpractice</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="tabs">
+                <button class="tab active">Overview</button>
+                <button class="tab">Case Analytics</button>
+                <button class="tab">Financial Reports</button>
+                <button class="tab">Client Acquisition</button>
+                <button class="tab">Attorney Performance</button>
+                <button class="tab">Custom Reports</button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-title">Total Active Cases</div>
+                    <div class="stat-value">38</div>
+                    <div class="stat-change positive">↑ 12% from last month</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">New Clients</div>
+                    <div class="stat-value">14</div>
+                    <div class="stat-change positive">↑ 8% from last month</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Settlements</div>
+                    <div class="stat-value">7</div>
+                    <div class="stat-change negative">↓ 5% from last month</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Avg. Settlement</div>
+                    <div class="stat-value">$42,500</div>
+                    <div class="stat-change positive">↑ 15% from last month</div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Cases by Stage</h3>
+                        <div class="chart-actions">
+                            <button class="chart-action-button">↓</button>
+                            <button class="chart-action-button">⚙️</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-bar">
+                            <div class="bar" style="height: 40%;">
+                                <div class="bar-value">6</div>
+                                <div class="bar-label">Intake</div>
+                            </div>
+                            <div class="bar" style="height: 60%;">
+                                <div class="bar-value">9</div>
+                                <div class="bar-label">Investigation</div>
+                            </div>
+                            <div class="bar" style="height: 80%;">
+                                <div class="bar-value">12</div>
+                                <div class="bar-label">Treatment</div>
+                            </div>
+                            <div class="bar" style="height: 53%;">
+                                <div class="bar-value">8</div>
+                                <div class="bar-label">Negotiation</div>
+                            </div>
+                            <div class="bar" style="height: 20%;">
+                                <div class="bar-value">3</div>
+                                <div class="bar-label">Litigation</div>
+                            </div>
+                            <div class="bar" style="height: 0%;">
+                                <div class="bar-value">0</div>
+                                <div class="bar-label">Settlement</div>
+                            </div>
+                            <div class="bar" style="height: 0%;">
+                                <div class="bar-value">0</div>
+                                <div class="bar-label">Closed</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Case Types Distribution</h3>
+                        <div class="chart-actions">
+                            <button class="chart-action-button">↓</button>
+                            <button class="chart-action-button">⚙️</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-pie">
+                            <div class="pie">
+                                <div class="pie-center"></div>
+                            </div>
+                            <div class="pie-legend">
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background-color: var(--primary);"></div>
+                                    <div class="legend-text">Auto Accident (25%)</div>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background-color: var(--secondary);"></div>
+                                    <div class="legend-text">Slip and Fall (30%)</div>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background-color: var(--info);"></div>
+                                    <div class="legend-text">Medical Malpractice (15%)</div>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background-color: var(--success);"></div>
+                                    <div class="legend-text">Workplace Injury (15%)</div>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background-color: var(--warning);"></div>
+                                    <div class="legend-text">Other (15%)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Monthly Settlements</h3>
+                        <div class="chart-actions">
+                            <button class="chart-action-button">↓</button>
+                            <button class="chart-action-button">⚙️</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-line">
+                            <div class="line-chart">
+                                <div class="line"></div>
+                                <div class="line-point" style="left: 10%; top: 70%;"></div>
+                                <div class="line-point" style="left: 25%; top: 50%;"></div>
+                                <div class="line-point" style="left: 40%; top: 30%;"></div>
+                                <div class="line-point" style="left: 55%; top: 60%;"></div>
+                                <div class="line-point" style="left: 70%; top: 40%;"></div>
+                                <div class="line-point" style="left: 85%; top: 20%;"></div>
+                            </div>
+                            <div class="line-axis">
+                                <div class="axis-label">Nov</div>
+                                <div class="axis-label">Dec</div>
+                                <div class="axis-label">Jan</div>
+                                <div class="axis-label">Feb</div>
+                                <div class="axis-label">Mar</div>
+                                <div class="axis-label">Apr</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Lead Conversion Rate</h3>
+                        <div class="chart-actions">
+                            <button class="chart-action-button">↓</button>
+                            <button class="chart-action-button">⚙️</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-bar">
+                            <div class="bar" style="height: 65%; background-color: var(--info);">
+                                <div class="bar-value">65%</div>
+                                <div class="bar-label">Website</div>
+                            </div>
+                            <div class="bar" style="height: 45%; background-color: var(--info);">
+                                <div class="bar-value">45%</div>
+                                <div class="bar-label">Referral</div>
+                            </div>
+                            <div class="bar" style="height: 30%; background-color: var(--info);">
+                                <div class="bar-value">30%</div>
+                                <div class="bar-label">Phone</div>
+                            </div>
+                            <div class="bar" style="height: 75%; background-color: var(--info);">
+                                <div class="bar-value">75%</div>
+                                <div class="bar-label">In-Person</div>
+                            </div>
+                            <div class="bar" style="height: 50%; background-color: var(--info);">
+                                <div class="bar-value">50%</div>
+                                <div class="bar-label">Social</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        let isDarkTheme = true;
+
+        themeToggle.addEventListener('click', () => {
+            isDarkTheme = !isDarkTheme;
+            
+            if (isDarkTheme) {
+                document.documentElement.style.setProperty('--primary', '#6200ee');
+                document.documentElement.style.setProperty('--secondary', '#7c4dff');
+                document.documentElement.style.setProperty('--background', '#121212');
+                document.documentElement.style.setProperty('--surface', '#1e1e1e');
+                document.documentElement.style.setProperty('--text-primary', '#ffffff');
+                document.documentElement.style.setProperty('--text-secondary', '#b0b0b0');
+                document.documentElement.style.setProperty('--divider', '#2e2e2e');
+                document.documentElement.style.setProperty('--shadow', 'rgba(0, 0, 0, 0.5)');
+                themeToggle.textContent = '☀️';
+            } else {
+                document.documentElement.style.setProperty('--primary', '#6200ee');
+                document.documentElement.style.setProperty('--secondary', '#7c4dff');
+                document.documentElement.style.setProperty('--background', '#f5f5f5');
+                document.documentElement.style.setProperty('--surface', '#ffffff');
+                document.documentElement.style.setProperty('--text-primary', '#212121');
+                document.documentElement.style.setProperty('--text-secondary', '#757575');
+                document.documentElement.style.setProperty('--divider', '#e0e0e0');
+                document.documentElement.style.setProperty('--shadow', 'rgba(0, 0, 0, 0.1)');
+                themeToggle.textContent = '🌙';
+            }
+        });
+
+        // Tab switching
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                alert('Switched to tab: ' + tab.textContent);
+            });
+        });
+
+        // Chart action buttons
+        const chartActionButtons = document.querySelectorAll('.chart-action-button');
+        chartActionButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const action = button.textContent;
+                const chartTitle = button.closest('.chart-card').querySelector('.chart-title').textContent;
+                
+                if (action === '↓') {
+                    alert('Exporting chart: ' + chartTitle);
+                } else if (action === '⚙️') {
+                    alert('Configuring chart: ' + chartTitle);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

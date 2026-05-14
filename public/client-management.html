@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Injury CRM - Client Management</title>
+    <style>
+        :root {
+            --primary: #6200ee;
+            --secondary: #7c4dff;
+            --background: #121212;
+            --surface: #1e1e1e;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --divider: #2e2e2e;
+            --success: #00c853;
+            --error: #ff5252;
+            --warning: #ffab40;
+            --info: #2196f3;
+            --shadow: rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background-color: var(--surface);
+            padding: 1.5rem;
+            border-right: 1px solid var(--divider);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-menu li {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-menu a {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            background-color: rgba(98, 0, 238, 0.1);
+            color: var(--primary);
+        }
+
+        .nav-menu a.active {
+            background-color: rgba(98, 0, 238, 0.2);
+            color: var(--primary);
+        }
+
+        .nav-menu i {
+            margin-right: 0.75rem;
+        }
+
+        .main-content {
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .page-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.6rem 1.2rem;
+            background-color: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--divider);
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: var(--surface);
+        }
+
+        .button.primary {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+        }
+
+        .button.primary:hover {
+            background-color: var(--secondary);
+        }
+
+        .button i {
+            margin-right: 0.5rem;
+        }
+
+        .filter-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-bar {
+            position: relative;
+            width: 300px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.6rem 1rem 0.6rem 2.5rem;
+            border-radius: 4px;
+            border: 1px solid var(--divider);
+            background-color: var(--background);
+            color: var(--text-primary);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--divider);
+            margin-bottom: 2rem;
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            color: var(--text-secondary);
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .tab.active {
+            border-bottom: 2px solid var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .tab:hover {
+            color: var(--primary);
+        }
+
+        .clients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .client-card {
+            background-color: var(--surface);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px var(--shadow);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .client-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px var(--shadow);
+        }
+
+        .client-header {
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-bottom: 1px solid var(--divider);
+        }
+
+        .client-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .client-info h3 {
+            margin: 0 0 0.25rem;
+            font-size: 1.2rem;
+        }
+
+        .client-info p {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .client-body {
+            padding: 1.5rem;
+        }
+
+        .client-detail {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+
+        .client-detail:last-child {
+            margin-bottom: 0;
+        }
+
+        .client-detail-label {
+            width: 100px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .client-detail-value {
+            flex: 1;
+        }
+
+        .client-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--divider);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .client-status {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .client-status.active {
+            background-color: var(--success) + '20';
+            color: var(--success);
+        }
+
+        .client-status.lead {
+            background-color: var(--info) + '20';
+            color: var(--info);
+        }
+
+        .client-status.inactive {
+            background-color: var(--text-secondary) + '20';
+            color: var(--text-secondary);
+        }
+
+        .client-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .client-action-button {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--divider);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .client-action-button:hover {
+            background-color: var(--background);
+            color: var(--primary);
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+        }
+
+        .pagination-info {
+            color: var(--text-secondary);
+        }
+
+        .pagination-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .pagination-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 4px;
+            background-color: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--divider);
+            font-weight: normal;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pagination-button:hover {
+            background-color: var(--surface);
+        }
+
+        .pagination-button.active {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            font-weight: 600;
+        }
+
+        .pagination-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .clients-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle">☀️</button>
+
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">Personal Injury CRM</div>
+            <ul class="nav-menu">
+                <li><a href="#"><i>📊</i> Dashboard</a></li>
+                <li><a href="#"><i>📁</i> Cases</a></li>
+                <li><a href="#" class="active"><i>👥</i> Clients</a></li>
+                <li><a href="#"><i>📄</i> Documents</a></li>
+                <li><a href="#"><i>📅</i> Calendar</a></li>
+                <li><a href="#"><i>✉️</i> Messages</a></li>
+                <li><a href="#"><i>📊</i> Reports</a></li>
+                <li><a href="#"><i>⚙️</i> Settings</a></li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <div class="page-header">
+                <h1 class="page-title">Clients</h1>
+                <div class="page-actions">
+                    <button class="button primary"><i>+</i> Add Client</button>
+                    <button class="button"><i>↓</i> Export</button>
+                </div>
+            </div>
+
+            <div class="filter-bar">
+                <div class="search-bar">
+                    <div class="search-icon">🔍</div>
+                    <input type="text" class="search-input" placeholder="Search clients...">
+                </div>
+                <div class="filter-actions">
+                    <button class="button"><i>🔍</i> Filter</button>
+                    <select class="button">
+                        <option>All Statuses</option>
+                        <option>Active Clients</option>
+                        <option>Leads</option>
+                        <option>Inactive Clients</option>
+                    </select>
+                    <select class="button">
+                        <option>All Attorneys</option>
+                        <option>John Doe</option>
+                        <option>Jane Smith</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="tabs">
+                <button class="tab active">All Clients</button>
+                <button class="tab">Active Clients</button>
+                <button class="tab">Leads</button>
+                <button class="tab">Inactive Clients</button>
+                <button class="tab">Recent</button>
+            </div>
+
+            <div class="clients-grid">
+                <div class="client-card">
+                    <div class="client-header">
+                        <div class="client-avatar">SJ</div>
+                        <div class="client-info">
+                            <h3>Sarah Johnson</h3>
+                            <p>Added Apr 10, 2025</p>
+                        </div>
+                    </div>
+                    <div class="client-body">
+                        <div class="client-detail">
+                            <div class="client-detail-label">Email:</div>
+                            <div class="client-detail-value">sarah.johnson@example.com</div>
+                        </div>
+                        <div class="client-detail">
+                            <div class="client-detail-label">Phone:</div>
+                            <div class="client-detail-value">(555) 123-4567</div>
+                        </div>
+                        <div class="client-detail">
+                            <div class="client-detail-label">Cases:</div>
+                            <div class="client-detail-value">1 Active</div>
+                        </div>
+                        <div class="client-detail">
+                            <div class="client-detail-label">Attorney:</div>
+                            <div class="client-detail-value">John Doe</div>
+                        </div>
+                    </div>
+                    <div class="client-footer">
+                        <span class="client-status active">Active Client</span>
+                        <div class="client-actions">
+                            <button class="client-action-button">📞</button>
+                            <button class="client-action-button">✉️</button>
+                            <button class="client-action-button">⋯</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="client-card">
+                    <div class="client-header">
+                        <div class="client-avatar">MR</div>
+                        <div class="client-info">
+                            <h3>Maria Rodriguez</h3>
+                            <p>Added Apr 15, 2025</p>
+                        </div>
+                    </div>
+                    <div class="client-body">
+                        <div class="client-detail">
+                            <div class="client-detail-label">Email:</div>
+                            <div class="client-detail-value">maria.rodriguez@example.com</div>
+                        </div>
+                        <div class="client-detail">
+                            <div class="client-detail-label">Phone:</div>
+                            <div class="client-detail-value">(555) 987-6543</div>
+                        </div>
+                        <div class="client-detail">
+                            <div class="client-detail-label">Cases:</div>
+                            <div class="client-detail-value">1 Active</div>
+                        </div>
+                        <div class="client-detail">
+                            <div class="client-detail-label">Attorney:</div>
+                            <div class="client-detail-value">Jane Smith</div>
+                        </div>
+                    </div>
+                    <div class="client-footer">
+                        <span class="client-status active">Active Client</span>
+                        <div class="client-actions">
+                            <button class="client-action-button">📞</button>
+                            <button class="client-action-button">✉️</button>
+                            <button class="client-action-button">⋯</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="client-card">
+                    <div class="client-header">
+                        <div class="client-avatar">RS</div>
+                        <div class="client-info">
+                            <h3>Robert Smith</h3>
+                            <p>Added Apr 14, 2025</p>
+                        </div>
+                    </div>
+                    <div class="client-body">
+                        <div class="client-detail">
+                            <div class="client-detail-label">Email:</div>
+                            <div class="client-detail-value">robert.smith@example.com</div>
+                        </div>
+                        <div class="client-detail">
+                            <div class="client-detail-label">Phone:</div>
+                            <div class="client-detail-value">(555) 456-7890</div>
+                        </div>
+                        <div class="client-detail">
+                            <div class="client-detail-label">Cases:</div>
+                            <div class="client-detail-value">1 Active</div>
+                        </div>
+                        <div class="client-detail">
+                            <div class="client-detail-label">Attorney:</div>
+                            <div class="client-detail-value">John Doe</div>
+                        </div>
+                    </div>
+                    <div class="client-footer">
+                        <span class="client-status active">Active Client</span>
+                        <div class="client-actions">
+                            <button class="client-action-button">📞</button>
+                            <button class="client-action-button">✉️</button>
+                            <button class="client-action-button">⋯</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="client-card">
+                    <div class="client-header">
+                        <div class="client-avatar">JW</div>
+                        <div class="client-info">
+                            <h3>James Williams</h3>
+                            <p>Added Apr 13, 2025</p>
+                        </div>
+                    </div>
+                    <div class="client-body">
+                        <div class="client-detail">
+                            <div class="client-detail-label">Email:</div>
+                            <div class="client-detail-value">james.williams@example.com</div>
+                        </div>
+                        <div class="client-detail">
+                            <div class="client-detail-label">Phone:</div>
+                            <div class="client-detail-value">(555) 789-0123</div>
+                        </div>
+                        <div class="client-detail">
+                            <div class="client-detail-label">Cases:</div>
+                            <div class="client-detail-value">1 Active</div>
+                        </div>
+                        <div class="client-detail">
+                            <div class="client-detail-label">Attorney:</div>
+                            <div class="client-detail-value">Jane Smith</div>
+                        </div>
+                    </div>
+                    <div class="client-footer">
+                        <span class="client-status active">Active Client</span>
+                        <div class="client-actions">
+                            <button class="client-action-button">📞</button>
+                            <button class="client-action-button">✉️</button>
+                            <button class="client-action-button">⋯</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="client-card">
+                    <div class="client-header">
+                        <div class="client-avatar">ED</div>
+                        <div class="client-info">
+                            <h3>Emily Davis</h3>
+                            <p>Added Apr 11, 2025</p>
+                        </div>
+                    </div>
+                    <div class="client-body">
+                        <div class="client-detail">
+                            <div class="client-detail-label">Email:</div>
+                            <div class="client-detail-value">emily.davis@example.com</div>
+                        </div>
+                        <div class="client-detail">
+                            <div class="client-detail-label">Phone:</div>
+                            <div class="client-detail-value">(555) 234-5678</div>
+                        </div>
+                        <div class="client-detail">
+                            <div class="client-detail-label">Cases:</div>
+                            <div class="client-detail-value">1 Active</div>
+                        </div>
+                        <div class="client-detail">
+                            <div class="client-detail-label">Attorney:</div>
+                            <div class="client-detail-value">Jane Smith</div>
+                        </div>
+                    </div>
+                    <div class="client-footer">
+                        <span class="client-status active">Active Client</span>
+                        <div class="client-actions">
+                            <button class="client-action-button">📞</button>
+                            <button class="client-action-button">✉️</button>
+                            <button class="client-action-button">⋯</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="client-card">
+                    <div class="client-header">
+                        <div class="client-avatar">TJ</div>
+                        <div class="client-info">
+                            <h3>Thomas Johnson</h3>
+                            <p>Added Apr 16, 2025</p>
+                        </div>
+                    </div>
+                    <div class="client-body">
+                        <div class="client-detail">
+                            <div class="client-detail-label">Email:</div>
+                            <div class="client-detail-value">thomas.johnson@example.com</div>
+                        </div>
+                        <div class="client-detail">
+                            <div class="client-detail-label">Phone:</div>
+                            <div class="client-detail-value">(555) 345-6789</div>
+                        </div>
+                        <div class="client-detail">
+                            <div class="client-detail-label">Cases:</div>
+                            <div class="client-detail-value">None</div>
+                        </div>
+                        <div class="client-detail">
+                            <div class="client-detail-label">Attorney:</div>
+                            <div class="client-detail-value">Not Assigned</div>
+                        </div>
+                    </div>
+                    <div class="client-footer">
+                        <span class="client-status lead">Lead</span>
+                        <div class="client-actions">
+                            <button class="client-action-button">📞</button>
+                            <button class="client-action-button">✉️</button>
+                            <button class="client-action-button">⋯</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pagination">
+                <div class="pagination-info">
+                    Showing 1-6 of 18 clients
+                </div>
+                <div class="pagination-controls">
+                    <button class="pagination-button" disabled>&lt;</button>
+                    <button class="pagination-button active">1</button>
+                    <button class="pagination-button">2</button>
+                    <button class="pagination-button">3</button>
+                    <button class="pagination-button">&gt;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        let isDarkTheme = true;
+
+        themeToggle.addEventListener('click', () => {
+            isDarkTheme = !isDarkTheme;
+            
+            if (isDarkTheme) {
+                document.documentElement.style.setProperty('--primary', '#6200ee');
+                document.documentElement.style.setProperty('--secondary', '#7c4dff');
+                document.documentElement.style.setProperty('--background', '#121212');
+                document.documentElement.style.setProperty('--surface', '#1e1e1e');
+                document.documentElement.style.setProperty('--text-primary', '#ffffff');
+                document.documentElement.style.setProperty('--text-secondary', '#b0b0b0');
+                document.documentElement.style.setProperty('--divider', '#2e2e2e');
+                document.documentElement.style.setProperty('--shadow', 'rgba(0, 0, 0, 0.5)');
+                themeToggle.textContent = '☀️';
+            } else {
+                document.documentElement.style.setProperty('--primary', '#6200ee');
+                document.documentElement.style.setProperty('--secondary', '#7c4dff');
+                document.documentElement.style.setProperty('--background', '#f5f5f5');
+                document.documentElement.style.setProperty('--surface', '#ffffff');
+                document.documentElement.style.setProperty('--text-primary', '#212121');
+                document.documentElement.style.setProperty('--text-secondary', '#757575');
+                document.documentElement.style.setProperty('--divider', '#e0e0e0');
+                document.documentElement.style.setProperty('--shadow', 'rgba(0, 0, 0, 0.1)');
+                themeToggle.textContent = '🌙';
+            }
+        });
+
+        // Make client cards clickable
+        const clientCards = document.querySelectorAll('.client-card');
+        clientCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                // Don't trigger if clicking on action buttons
+                if (!e.target.closest('.client-action-button')) {
+                    const clientName = card.querySelector('h3').textContent;
+                    alert('Viewing client details: ' + clientName);
+                }
+            });
+        });
+
+        // Tab switching
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+            });
+        });
+
+        // Client action buttons
+        const actionButtons = document.querySelectorAll('.client-action-button');
+        actionButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent card click
+                const action = button.textContent;
+                const clientName = button.closest('.client-card').querySelector('h3').textContent;
+                
+                if (action === '📞') {
+                    alert('Calling ' + clientName);
+                } else if (action === '✉️') {
+                    alert('Sending message to ' + clientName);
+                } else if (action === '⋯') {
+                    alert('More options for ' + clientName);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
