@@ -77,6 +77,8 @@ const PrimaryButton = styled.a`
   border-radius: 4px;
   font-weight: 600;
   transition: all 0.3s ease;
+  text-decoration: none;
+  cursor: pointer;
   
   &:hover {
     transform: translateY(-3px);
@@ -93,6 +95,8 @@ const SecondaryButton = styled.a`
   border-radius: 4px;
   font-weight: 600;
   transition: all 0.3s ease;
+  text-decoration: none;
+  cursor: pointer;
   
   &:hover {
     background-color: white;

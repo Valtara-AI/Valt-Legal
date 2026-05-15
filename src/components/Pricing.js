@@ -6,6 +6,7 @@ const PricingSection = styled.section`
   background-color: ${props => props.theme.background};
   position: relative;
   overflow: hidden;
+  padding: 4rem 0;
   
   &:before {
     content: '';
@@ -73,6 +74,7 @@ const PricingCard = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
+  position: relative;
   
   ${props => props.popular && `
     transform: scale(1.05);
@@ -124,6 +126,7 @@ const PricingFeatures = styled.ul`
   list-style: none;
   margin-bottom: 2rem;
   flex: 1;
+  padding: 0;
 `;
 
 const PricingFeature = styled.li`
@@ -149,6 +152,8 @@ const PricingButton = styled.a`
   border-radius: 4px;
   font-weight: 600;
   transition: all 0.3s ease;
+  text-decoration: none;
+  cursor: pointer;
   
   &:hover {
     background-color: ${props => props.theme.primary};

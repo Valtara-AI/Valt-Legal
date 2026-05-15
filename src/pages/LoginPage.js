@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { FiMail, FiLock, FiAlertCircle } from 'react-icons/fi';
+import { FiMail, FiLock, FiEye, FiEyeOff, FiArrowRight } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 
 const LoginContainer = styled.div`
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${props => props.theme.background};
-  padding: 1rem;
+  background: linear-gradient(135deg, ${props => props.theme.primary} 0%, ${props => props.theme.secondary} 100%);
+  padding: 2rem;
 `;
 
-const LoginCard = styled.div`
+const LoginBox = styled.div`
   background-color: ${props => props.theme.surface};
   border-radius: 8px;
   padding: 3rem;
-  box-shadow: 0 10px 40px ${props => props.theme.shadow};
   width: 100%;
   max-width: 450px;
+  box-shadow: 0 10px 40px ${props => props.theme.shadow};
 `;
 
 const Logo = styled.div`
@@ -28,7 +28,7 @@ const Logo = styled.div`
   h1 {
     font-size: 1.8rem;
     color: ${props => props.theme.primary};
-    margin: 0 0 0.5rem;
+    margin: 0;
     
     span {
       color: ${props => props.theme.secondary};
@@ -37,13 +37,9 @@ const Logo = styled.div`
   
   p {
     color: ${props => props.theme.text.secondary};
-    margin: 0;
+    margin: 0.5rem 0 0 0;
+    font-size: 0.9rem;
   }
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
 `;
 
 const FormGroup = styled.div`
@@ -55,6 +51,7 @@ const Label = styled.label`
   margin-bottom: 0.5rem;
   color: ${props => props.theme.text.primary};
   font-weight: 500;
+  font-size: 0.95rem;
 `;
 
 const InputWrapper = styled.div`
@@ -63,17 +60,9 @@ const InputWrapper = styled.div`
   align-items: center;
 `;
 
-const InputIcon = styled.div`
-  position: absolute;
-  left: 1rem;
-  color: ${props => props.theme.text.secondary};
-  display: flex;
-  align-items: center;
-`;
-
 const Input = styled.input`
   width: 100%;
-  padding: 0.8rem 1rem 0.8rem 2.8rem;
+  padding: 0.8rem 1rem 0.8rem 2.5rem;
   border: 1px solid ${props => props.theme.divider};
   border-radius: 4px;
   background-color: ${props => props.theme.background};
@@ -92,14 +81,32 @@ const Input = styled.input`
   }
 `;
 
-const RememberMeWrapper = styled.div`
+const InputIcon = styled.div`
+  position: absolute;
+  left: 0.75rem;
+  color: ${props => props.theme.text.secondary};
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  justify-content: center;
 `;
 
-const CheckboxLabel = styled.label`
+const ToggleIcon = styled.button`
+  position: absolute;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  color: ${props => props.theme.text.secondary};
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &:hover {
+    color: ${props => props.theme.primary};
+  }
+`;
+
+const RememberMe = styled.label`
   display: flex;
   align-items: center;
   color: ${props => props.theme.text.secondary};
@@ -108,34 +115,51 @@ const CheckboxLabel = styled.label`
   
   input {
     margin-right: 0.5rem;
+    cursor: pointer;
+  }
+  
+  &:hover {
+    color: ${props => props.theme.text.primary};
   }
 `;
 
-const ForgotPasswordLink = styled.a`
+const ForgotPassword = styled.a`
+  float: right;
   color: ${props => props.theme.primary};
   text-decoration: none;
   font-size: 0.9rem;
   transition: color 0.3s ease;
   
   &:hover {
-    color: ${props => props.theme.secondary};
+    text-decoration: underline;
   }
 `;
 
-const SubmitButton = styled.button`
-  padding: 0.8rem 1.5rem;
+const LoginButton = styled.button`
+  width: 100%;
+  padding: 0.8rem 1rem;
   background-color: ${props => props.theme.primary};
   color: white;
   border: none;
   border-radius: 4px;
-  font-weight: 600;
   font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   
   &:hover {
     background-color: ${props => props.theme.secondary};
     transform: translateY(-2px);
+    box-shadow: 0 5px 15px ${props => props.theme.shadow};
+  }
+  
+  &:active {
+    transform: translateY(0);
   }
   
   &:disabled {
@@ -144,22 +168,11 @@ const SubmitButton = styled.button`
   }
 `;
 
-const ErrorMessage = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
-  padding: 1rem;
-  background-color: ${props => props.theme.error}20;
-  color: ${props => props.theme.error};
-  border-radius: 4px;
-  font-size: 0.9rem;
-`;
-
 const SignupLink = styled.div`
   text-align: center;
   margin-top: 1.5rem;
   color: ${props => props.theme.text.secondary};
+  font-size: 0.9rem;
   
   a {
     color: ${props => props.theme.primary};
@@ -168,93 +181,72 @@ const SignupLink = styled.div`
     transition: color 0.3s ease;
     
     &:hover {
-      color: ${props => props.theme.secondary};
+      text-decoration: underline;
     }
   }
 `;
 
-const DemoInfo = styled.div`
-  background-color: ${props => props.theme.info}20;
-  border: 1px solid ${props => props.theme.info};
+const ErrorMessage = styled.div`
+  background-color: ${props => props.theme.error}20;
+  color: ${props => props.theme.error};
+  padding: 0.75rem 1rem;
   border-radius: 4px;
-  padding: 1rem;
   margin-bottom: 1.5rem;
-  font-size: 0.85rem;
-  color: ${props => props.theme.text.primary};
-  
-  strong {
-    display: block;
-    color: ${props => props.theme.info};
-    margin-bottom: 0.5rem;
-  }
-  
-  p {
-    margin: 0.25rem 0;
-  }
+  font-size: 0.9rem;
+  border-left: 3px solid ${props => props.theme.error};
 `;
 
 const LoginPage = () => {
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    rememberMe: false
-  });
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }));
-    setError('');
-  };
-
-  const handleSubmit = (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    setLoading(true);
+    setError('');
+
+    if (!email || !password) {
+      setError('Please fill in all fields');
+      return;
+    }
+
+    if (!email.includes('@')) {
+      setError('Please enter a valid email address');
+      return;
+    }
+
+    setIsLoading(true);
 
     // Simulate API call
     setTimeout(() => {
-      // Demo credentials
-      if (formData.email === 'demo@example.com' && formData.password === 'demo123') {
-        // Store auth token in localStorage
-        localStorage.setItem('authToken', 'demo-token-' + Date.now());
-        localStorage.setItem('userEmail', formData.email);
-        
-        // Redirect to dashboard
-        navigate('/dashboard');
-      } else {
-        setError('Invalid email or password. Try demo@example.com / demo123');
-        setLoading(false);
+      // Set authentication
+      localStorage.setItem('isAuthenticated', 'true');
+      localStorage.setItem('userEmail', email);
+      
+      if (rememberMe) {
+        localStorage.setItem('rememberMe', 'true');
       }
+
+      // Redirect to dashboard
+      navigate('/dashboard');
     }, 1000);
   };
 
   return (
     <LoginContainer>
-      <LoginCard>
+      <LoginBox>
         <Logo>
           <h1>Personal<span>Injury</span>CRM</h1>
-          <p>Login to your account</p>
+          <p>Sign In to Your Account</p>
         </Logo>
 
-        <DemoInfo>
-          <strong>Demo Credentials:</strong>
-          <p>📧 Email: demo@example.com</p>
-          <p>🔑 Password: demo123</p>
-        </DemoInfo>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
 
-        {error && (
-          <ErrorMessage>
-            <FiAlertCircle />
-            {error}
-          </ErrorMessage>
-        )}
-
-        <Form onSubmit={handleSubmit}>
+        <form onSubmit={handleLogin}>
           <FormGroup>
             <Label htmlFor="email">Email Address</Label>
             <InputWrapper>
@@ -262,13 +254,12 @@ const LoginPage = () => {
                 <FiMail />
               </InputIcon>
               <Input
-                type="email"
                 id="email"
-                name="email"
-                placeholder="your.email@example.com"
-                value={formData.email}
-                onChange={handleChange}
-                required
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={isLoading}
               />
             </InputWrapper>
           </FormGroup>
@@ -280,39 +271,45 @@ const LoginPage = () => {
                 <FiLock />
               </InputIcon>
               <Input
-                type="password"
                 id="password"
-                name="password"
+                type={showPassword ? 'text' : 'password'}
                 placeholder="Enter your password"
-                value={formData.password}
-                onChange={handleChange}
-                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={isLoading}
               />
+              <ToggleIcon
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                disabled={isLoading}
+              >
+                {showPassword ? <FiEyeOff /> : <FiEye />}
+              </ToggleIcon>
             </InputWrapper>
           </FormGroup>
 
-          <RememberMeWrapper>
-            <CheckboxLabel>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+            <RememberMe>
               <input
                 type="checkbox"
-                name="rememberMe"
-                checked={formData.rememberMe}
-                onChange={handleChange}
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                disabled={isLoading}
               />
               Remember me
-            </CheckboxLabel>
-            <ForgotPasswordLink href="#forgot">Forgot password?</ForgotPasswordLink>
-          </RememberMeWrapper>
+            </RememberMe>
+            <ForgotPassword href="#forgot">Forgot password?</ForgotPassword>
+          </div>
 
-          <SubmitButton type="submit" disabled={loading}>
-            {loading ? 'Logging in...' : 'Login'}
-          </SubmitButton>
-        </Form>
+          <LoginButton type="submit" disabled={isLoading}>
+            {isLoading ? 'Signing In...' : <>Sign In <FiArrowRight size={18} /></>}
+          </LoginButton>
+        </form>
 
         <SignupLink>
-          Don't have an account? <a href="/signup">Sign up here</a>
+          Don't have an account? <a href="/signup">Create one here</a>
         </SignupLink>
-      </LoginCard>
+      </LoginBox>
     </LoginContainer>
   );
 };
