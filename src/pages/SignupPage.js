@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { FiUser, FiMail, FiLock, FiPhone, FiBuilding, FiEye, FiEyeOff, FiArrowRight } from 'react-icons/fi';
+import { FiUser, FiMail, FiLock, FiPhone, FiEye, FiEyeOff, FiArrowRight, FiHome } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 
 const SignupContainer = styled.div`
@@ -367,7 +367,7 @@ const SignupPage = () => {
             <Label htmlFor="firmName">Law Firm Name</Label>
             <InputWrapper>
               <InputIcon>
-                <FiBuilding />
+                <FiHome />
               </InputIcon>
               <Input
                 id="firmName"
@@ -403,7 +403,7 @@ const SignupPage = () => {
             <Label htmlFor="firmSize">Firm Size</Label>
             <InputWrapper>
               <InputIcon>
-                <FiBuilding />
+                <FiHome />
               </InputIcon>
               <Select
                 id="firmSize"
