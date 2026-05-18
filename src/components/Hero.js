@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FiCheckCircle } from 'react-icons/fi';
 
@@ -47,13 +47,33 @@ const HeroSubtitle = styled.p`
 
 const HeroImage = styled.div`
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   
   img {
     width: 100%;
     max-width: 500px;
     border-radius: 8px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    object-fit: cover;
   }
+`;
+
+const PlaceholderImage = styled.div`
+  width: 100%;
+  max-width: 500px;
+  height: 350px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1rem;
+  text-align: center;
+  padding: 2rem;
 `;
 
 const HeroButtons = styled.div`
@@ -123,6 +143,19 @@ const FeatureItem = styled.div`
 `;
 
 const Hero = () => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+    setImageError(false);
+  };
+
+  const handleImageError = () => {
+    setImageError(true);
+    setImageLoaded(false);
+  };
+
   return (
     <HeroSection>
       <div className="container">
@@ -155,7 +188,18 @@ const Hero = () => {
           </HeroContent>
           
           <HeroImage>
-            <img src="/dashboard-preview.png" alt="Personal Injury CRM Dashboard" />
+            {!imageError ? (
+              <img 
+                src="/dashboard-preview.png" 
+                alt="Personal Injury CRM Dashboard" 
+                onLoad={handleImageLoad}
+                onError={handleImageError}
+              />
+            ) : (
+              <PlaceholderImage>
+                Dashboard preview image not found
+              </PlaceholderImage>
+            )}
           </HeroImage>
         </HeroContainer>
       </div>
