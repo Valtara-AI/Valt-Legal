@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { FiUsers, FiFileText, FiCalendar, FiMessageSquare, FiPieChart, FiAlertCircle } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 
 const DashboardContainer = styled.div``;
 
@@ -110,6 +111,8 @@ const ViewAllLink = styled.a`
   font-size: 0.9rem;
   color: ${props => props.theme.primary};
   font-weight: normal;
+  cursor: pointer;
+  text-decoration: none;
   
   &:hover {
     text-decoration: underline;
@@ -135,6 +138,7 @@ const TaskCheckbox = styled.input`
   width: 18px;
   height: 18px;
   accent-color: ${props => props.theme.primary};
+  cursor: pointer;
 `;
 
 const TaskContent = styled.div`
@@ -272,6 +276,16 @@ const ActivityTime = styled.div`
 `;
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if user is authenticated
+    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+    if (!isAuthenticated) {
+      navigate('/login');
+    }
+  }, [navigate]);
+
   return (
     <DashboardContainer>
       <WelcomeCard>
