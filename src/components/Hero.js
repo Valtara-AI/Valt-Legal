@@ -54,9 +54,10 @@ const HeroImage = styled.div`
   img {
     width: 100%;
     max-width: 500px;
+    height: auto;
     border-radius: 8px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    object-fit: cover;
+    object-fit: contain;
   }
 `;
 
@@ -143,17 +144,10 @@ const FeatureItem = styled.div`
 `;
 
 const Hero = () => {
-  const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
-
-  const handleImageLoad = () => {
-    setImageLoaded(true);
-    setImageError(false);
-  };
 
   const handleImageError = () => {
     setImageError(true);
-    setImageLoaded(false);
   };
 
   return (
@@ -190,9 +184,8 @@ const Hero = () => {
           <HeroImage>
             {!imageError ? (
               <img 
-                src="/dashboard-preview.png" 
+                src="/Screenshot 2026-05-17 at 20.21.58.png" 
                 alt="Personal Injury CRM Dashboard" 
-                onLoad={handleImageLoad}
                 onError={handleImageError}
               />
             ) : (
