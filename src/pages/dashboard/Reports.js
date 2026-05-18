@@ -43,6 +43,7 @@ const Button = styled.button`
   border-radius: 4px;
   font-weight: 500;
   transition: all 0.3s ease;
+  cursor: pointer;
   
   svg {
     margin-right: 0.5rem;
@@ -100,6 +101,7 @@ const Tab = styled.button`
   font-weight: ${props => props.active ? '600' : '400'};
   transition: all 0.3s ease;
   white-space: nowrap;
+  cursor: pointer;
   
   &:hover {
     color: ${props => props.theme.primary};
@@ -190,8 +192,11 @@ const ChartActions = styled.div`
 
 const ChartActionButton = styled.button`
   background: none;
+  border: none;
   color: ${props => props.theme.text.secondary};
   font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
   
   &:hover {
     color: ${props => props.theme.primary};
@@ -203,9 +208,64 @@ const ChartPlaceholder = styled.div`
   background-color: ${props => props.theme.background};
   border-radius: 4px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   color: ${props => props.theme.text.secondary};
+  gap: 1rem;
+`;
+
+const ChartPlaceholderText = styled.div`
+  font-size: 0.95rem;
+  text-align: center;
+`;
+
+const SimpleChart = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  padding: 1rem 0;
+  gap: 0.5rem;
+`;
+
+const ChartBar = styled.div`
+  flex: 1;
+  background: linear-gradient(to top, ${props => props.theme.primary}, ${props => props.theme.primary}cc);
+  border-radius: 4px 4px 0 0;
+  min-height: 20%;
+  height: ${props => props.height}%;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  
+  &:hover {
+    opacity: 0.8;
+  }
+  
+  &:after {
+    content: attr(data-value);
+    position: absolute;
+    top: -1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8rem;
+    color: ${props => props.theme.text.secondary};
+  }
+`;
+
+const PieChart = styled.div`
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: conic-gradient(
+    ${props => props.theme.primary} 0deg 144deg,
+    ${props => props.theme.success} 144deg 216deg,
+    ${props => props.theme.warning} 216deg 288deg,
+    ${props => props.theme.error} 288deg 360deg
+  );
+  margin: 0 auto;
 `;
 
 const TableCard = styled.div`
@@ -262,6 +322,15 @@ const TableCell = styled.td`
 
 const Reports = () => {
   const [activeTab, setActiveTab] = useState('overview');
+  
+  // Sample data for bar chart
+  const barChartData = [
+    { label: 'Intake', value: 45 },
+    { label: 'Investigation', value: 65 },
+    { label: 'Treatment', value: 55 },
+    { label: 'Negotiation', value: 75 },
+    { label: 'Settlement', value: 85 }
+  ];
   
   return (
     <ReportsContainer>
@@ -362,9 +431,16 @@ const Reports = () => {
                   </ChartActionButton>
                 </ChartActions>
               </ChartHeader>
-              <ChartPlaceholder>
-                <FiBarChart2 size={48} />
-              </ChartPlaceholder>
+              <SimpleChart>
+                {barChartData.map((item, index) => (
+                  <ChartBar 
+                    key={index}
+                    height={item.value}
+                    data-value={item.label}
+                    title={`${item.label}: ${item.value}%`}
+                  />
+                ))}
+              </SimpleChart>
             </ChartCard>
             
             <ChartCard>
@@ -377,7 +453,13 @@ const Reports = () => {
                 </ChartActions>
               </ChartHeader>
               <ChartPlaceholder>
-                <FiPieChart size={48} />
+                <PieChart />
+                <ChartPlaceholderText>
+                  Slip & Fall: 40%<br/>
+                  Auto Accident: 30%<br/>
+                  Medical: 20%<br/>
+                  Other: 10%
+                </ChartPlaceholderText>
               </ChartPlaceholder>
             </ChartCard>
           </ChartsGrid>
