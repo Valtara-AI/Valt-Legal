@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { FiMenu, FiBell, FiUser, FiSearch, FiLogOut } from 'react-icons/fi';
 import { useTheme } from '../../styles/ThemeProvider';
+import { useNavigate } from 'react-router-dom';
 
 const HeaderContainer = styled.header`
   background-color: ${props => props.theme.surface};
@@ -33,6 +34,8 @@ const MenuToggle = styled.button`
   font-size: 1.5rem;
   margin-right: 1rem;
   display: none;
+  border: none;
+  cursor: pointer;
   
   @media (max-width: 992px) {
     display: block;
@@ -77,10 +80,13 @@ const RightSection = styled.div`
 
 const IconButton = styled.button`
   background: none;
+  border: none;
   color: ${props => props.theme.text.primary};
   font-size: 1.25rem;
   margin-left: 1rem;
   position: relative;
+  cursor: pointer;
+  transition: color 0.3s ease;
   
   &:hover {
     color: ${props => props.theme.primary};
@@ -142,6 +148,20 @@ const UserRole = styled.div`
 
 const DashboardHeader = ({ toggleSidebar }) => {
   const { isDarkMode, toggleTheme } = useTheme();
+  const navigate = useNavigate();
+  
+  const handleLogout = () => {
+    // Clear auth data
+    localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('firmName');
+    localStorage.removeItem('userData');
+    localStorage.removeItem('rememberMe');
+    
+    // Redirect to home
+    navigate('/');
+  };
   
   return (
     <HeaderContainer>
@@ -159,7 +179,7 @@ const DashboardHeader = ({ toggleSidebar }) => {
       </LeftSection>
       
       <RightSection>
-        <IconButton>
+        <IconButton aria-label="Notifications">
           <FiBell />
           <NotificationBadge>3</NotificationBadge>
         </IconButton>
@@ -174,7 +194,11 @@ const DashboardHeader = ({ toggleSidebar }) => {
           </UserInfo>
         </UserProfile>
         
-        <IconButton>
+        <IconButton 
+          onClick={handleLogout}
+          aria-label="Logout"
+          title="Sign out"
+        >
           <FiLogOut />
         </IconButton>
       </RightSection>
