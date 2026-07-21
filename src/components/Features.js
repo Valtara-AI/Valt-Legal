@@ -72,44 +72,44 @@ const Features = () => {
       id: 'case-management',
       icon: <FiDatabase />,
       title: 'Case Management',
-      description: 'Centralize all case information, documents, and communications in one secure location for easy access and management.'
+      description: 'Every case moves through a defined pipeline — Intake, Investigation, Treatment, Negotiation, Litigation, Settlement — with a status flag (Urgent, Active, Pending) so nothing sits unattended.'
     },
     {
       id: 'client-communication',
       icon: <FiUsers />,
-      title: 'Client Communication',
-      description: 'Automate client updates, appointment reminders, and document requests to improve client satisfaction and save time.'
+      title: 'Client & Lead Tracking',
+      description: 'Filter contacts by Active Clients, Leads, or Inactive Clients, and see case count, contact details, and status at a glance for each one.'
     },
     {
       id: 'document-management',
       icon: <FiFileText />,
       title: 'Document Management',
-      description: 'Store, organize, and share case-related documents securely with built-in HIPAA-compliant document management.'
+      description: 'Organize case files into folders, track templates, and see which documents are signed versus pending signature — all in one place.'
     },
     {
       id: 'task-automation',
       icon: <FiCalendar />,
-      title: 'Task Automation',
-      description: 'Create customizable workflows to automate routine tasks, deadlines, and follow-ups for increased efficiency.'
+      title: 'Task & Deadline Tracking',
+      description: 'Every task is tied to a case and a due date, with overdue items flagged in red — so demand letters and depositions don\'t slip past deadline.'
     },
     {
       id: 'lead-tracking',
       icon: <FiMessageSquare />,
-      title: 'Lead Tracking',
-      description: 'Track and manage potential clients from initial contact through case resolution with powerful lead management tools.'
+      title: 'Activity Feed',
+      description: 'A running log of what changed and when — settlement offers, new intakes, court hearings, and incoming messages — so nothing gets missed between check-ins.'
     },
     {
       id: 'reporting-analytics',
       icon: <FiPieChart />,
       title: 'Reporting & Analytics',
-      description: 'Gain valuable insights into your firm\'s performance with customizable reports and real-time analytics dashboards.'
+      description: 'See active case counts, new cases this month, settlements closed, and average settlement value, plus a breakdown of case types and recent settlements.'
     },
   ];
 
   return (
     <FeaturesSection id="features">
       <div className="container">
-        <SectionTitle>Powerful Features</SectionTitle>
+        <SectionTitle>What's Inside</SectionTitle>
         <FeaturesGrid>
           {featuresData.map((feature) => (
             <FeatureCard key={feature.id}>

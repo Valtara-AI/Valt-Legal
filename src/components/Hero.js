@@ -155,29 +155,29 @@ const Hero = () => {
       <div className="container">
         <HeroContainer>
           <HeroContent>
-            <HeroTitle>Streamline Your Personal Injury Case Management</HeroTitle>
+            <HeroTitle>Every Personal Injury Case, Tracked From Intake to Settlement</HeroTitle>
             <HeroSubtitle>
-              An all-in-one CRM solution designed specifically for personal injury law firms to manage cases, track leads, and improve client communication.
+              Most firms track cases across a patchwork of spreadsheets, inboxes, and sticky notes — and deadlines slip through the cracks. This CRM puts every case on one pipeline (Intake, Investigation, Treatment, Negotiation, Litigation, Settlement), so nothing gets missed.
             </HeroSubtitle>
-            
+
             <FeatureList>
               <FeatureItem>
-                <FiCheckCircle /> Centralized Case Management
+                <FiCheckCircle /> Full case pipeline from intake to settlement
               </FeatureItem>
               <FeatureItem>
-                <FiCheckCircle /> Automated Client Communication
+                <FiCheckCircle /> Client and lead tracking with status views
               </FeatureItem>
               <FeatureItem>
-                <FiCheckCircle /> Customizable Workflows
+                <FiCheckCircle /> Centralized document and signature storage
               </FeatureItem>
               <FeatureItem>
-                <FiCheckCircle /> HIPAA Compliant Security
+                <FiCheckCircle /> Live case and settlement reporting
               </FeatureItem>
             </FeatureList>
-            
+
             <HeroButtons>
               <PrimaryButton href="/signup">Start Free Trial</PrimaryButton>
-              <SecondaryButton href="#demo">Watch Demo</SecondaryButton>
+              <SecondaryButton href="/login">Try the Live Demo</SecondaryButton>
             </HeroButtons>
           </HeroContent>
           

@@ -38,6 +38,7 @@ const GlobalStyles = createGlobalStyle`
 
   section {
     padding: 4rem 0;
+    scroll-margin-top: 80px;
   }
 
   .container {

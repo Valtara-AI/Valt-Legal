@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { FiMoon, FiSun, FiLogOut } from 'react-icons/fi';
+import { FiMoon, FiSun, FiLogOut, FiMenu, FiX } from 'react-icons/fi';
 import { useTheme } from '../styles/ThemeProvider';
-import { useNavigate } from 'react-router-dom';
 
 const HeaderContainer = styled.header`
   background-color: ${props => props.theme.surface};
@@ -35,9 +34,19 @@ const Logo = styled.div`
 const NavLinks = styled.nav`
   display: flex;
   align-items: center;
-  
+
   @media (max-width: 768px) {
-    display: none;
+    display: ${props => props.$mobileOpen ? 'flex' : 'none'};
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+    background-color: ${props => props.theme.surface};
+    padding: 1rem 1.5rem 1.5rem;
+    box-shadow: 0 4px 6px ${props => props.theme.shadow};
   }
 `;
 
@@ -47,7 +56,13 @@ const NavLink = styled.a`
   color: ${props => props.theme.text.primary};
   transition: color 0.3s ease;
   cursor: pointer;
-  
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+    padding: 0.6rem 0;
+    width: 100%;
+  }
+
   &:hover {
     color: ${props => props.theme.primary};
   }
@@ -60,7 +75,7 @@ const MobileMenuButton = styled.button`
   color: ${props => props.theme.text.primary};
   border: none;
   cursor: pointer;
-  
+
   @media (max-width: 768px) {
     display: block;
   }
@@ -77,7 +92,12 @@ const ThemeToggle = styled.button`
   font-size: 1.2rem;
   transition: color 0.3s ease;
   cursor: pointer;
-  
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+    padding: 0.6rem 0;
+  }
+
   &:hover {
     color: ${props => props.theme.primary};
   }
@@ -96,7 +116,12 @@ const ActionButton = styled.button`
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
+
   &:hover {
     background-color: ${props => props.theme.secondary};
   }
@@ -104,7 +129,10 @@ const ActionButton = styled.button`
 
 const Header = ({ onLogout }) => {
   const { isDarkMode, toggleTheme } = useTheme();
-  
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleNavClick = () => setMobileOpen(false);
+
   return (
     <HeaderContainer>
       <div className="container">
@@ -112,12 +140,15 @@ const Header = ({ onLogout }) => {
           <Logo>
             Personal<span>Injury</span>CRM
           </Logo>
-          
-          <NavLinks>
-            <NavLink href="#features">Features</NavLink>
-            <NavLink href="#pricing">Pricing</NavLink>
-            <NavLink href="#testimonials">Testimonials</NavLink>
-            <NavLink href="#contact">Contact</NavLink>
+
+          <NavLinks $mobileOpen={mobileOpen}>
+            <NavLink href="#features" onClick={handleNavClick}>Features</NavLink>
+            <NavLink href="#pricing" onClick={handleNavClick}>Pricing</NavLink>
+            <NavLink href="#testimonials" onClick={handleNavClick}>Testimonials</NavLink>
+            <NavLink href="#contact" onClick={handleNavClick}>Contact</NavLink>
+            {!onLogout && (
+              <NavLink href="/login" onClick={handleNavClick}>Log In</NavLink>
+            )}
             <ThemeToggle onClick={toggleTheme}>
               {isDarkMode ? <FiSun /> : <FiMoon />}
             </ThemeToggle>
@@ -127,9 +158,9 @@ const Header = ({ onLogout }) => {
               </ActionButton>
             )}
           </NavLinks>
-          
-          <MobileMenuButton>
-            ☰
+
+          <MobileMenuButton onClick={() => setMobileOpen(!mobileOpen)} aria-label="Toggle menu">
+            {mobileOpen ? <FiX /> : <FiMenu />}
           </MobileMenuButton>
         </NavContainer>
       </div>

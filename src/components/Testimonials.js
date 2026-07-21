@@ -106,7 +106,7 @@ const Testimonials = () => {
   const testimonialData = [
     {
       rating: 5,
-      text: "This CRM has completely transformed how we manage our personal injury cases. The automated workflows have saved us countless hours, and our clients love the improved communication.",
+      text: "Having every case on one pipeline, from intake through settlement, has completely changed how we manage our caseload. We always know exactly where each file stands.",
       author: {
         name: "Sarah Johnson",
         title: "Managing Partner, Johnson & Associates",
@@ -115,7 +115,7 @@ const Testimonials = () => {
     },
     {
       rating: 5,
-      text: "After trying several CRM solutions, we finally found one that understands the unique needs of personal injury law. The document management and HIPAA compliance features are exactly what we needed.",
+      text: "After trying several CRM solutions, we finally found one that understands personal injury work. Being able to see which documents are signed versus still pending signature saves us a phone call every time.",
       author: {
         name: "Michael Rodriguez",
         title: "Attorney, Rodriguez Law Group",

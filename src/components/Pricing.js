@@ -256,7 +256,7 @@ const Pricing = () => {
                 ))}
               </PricingFeatures>
               
-              <PricingButton href="/signup" popular={plan.popular}>
+              <PricingButton href={plan.buttonText === 'Contact Sales' ? '#contact' : '/signup'} popular={plan.popular}>
                 {plan.buttonText}
               </PricingButton>
             </PricingCard>

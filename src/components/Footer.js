@@ -125,7 +125,7 @@ const Footer = () => {
               Personal<span>Injury</span>CRM
             </FooterLogo>
             <FooterDescription>
-              An all-in-one CRM solution designed specifically for personal injury law firms to manage cases, track leads, and improve client communication.
+              Case management built for personal injury firms — track every case from intake to settlement, manage clients and leads, and keep documents and reporting in one place.
             </FooterDescription>
           </FooterColumn>
           
