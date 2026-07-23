@@ -75,72 +75,49 @@ const TestimonialAuthor = styled.div`
   align-items: center;
 `;
 
-const AuthorAvatar = styled.div`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  overflow: hidden;
-  margin-right: 1rem;
-  
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-`;
-
 const AuthorInfo = styled.div``;
-
-const AuthorName = styled.h4`
-  font-size: 1rem;
-  margin-bottom: 0.2rem;
-  color: ${props => props.theme.text.primary};
-`;
 
 const AuthorTitle = styled.p`
   font-size: 0.9rem;
+  font-weight: 600;
   color: ${props => props.theme.text.secondary};
 `;
 
 const Testimonials = () => {
+  // Persona-based statements grounded in this app's actual features (case
+  // pipeline, document/signature tracking, reporting) — not real customer
+  // quotes. Intentionally has no names, firms, or photos attached: earlier
+  // drafts paired stock photos with invented firm names ("Johnson &
+  // Associates", "Rodriguez Law Group", "Chen Legal") that turned out to
+  // resemble real, identifiable personal injury practices, so this section
+  // was rewritten to be clearly illustrative instead of misrepresented as
+  // verified customer testimonials.
   const testimonialData = [
     {
       rating: 5,
-      text: "Having every case on one pipeline, from intake through settlement, has completely changed how we manage our caseload. We always know exactly where each file stands.",
-      author: {
-        name: "Sarah Johnson",
-        title: "Managing Partner, Johnson & Associates",
-        avatar: "https://randomuser.me/api/portraits/women/1.jpg"
-      }
+      text: "Having every case on one pipeline, from intake through settlement, would completely change how a firm manages its caseload — always knowing exactly where each file stands.",
+      persona: "Managing Partner, small PI firm"
     },
     {
       rating: 5,
-      text: "After trying several CRM solutions, we finally found one that understands personal injury work. Being able to see which documents are signed versus still pending signature saves us a phone call every time.",
-      author: {
-        name: "Michael Rodriguez",
-        title: "Attorney, Rodriguez Law Group",
-        avatar: "https://randomuser.me/api/portraits/men/2.jpg"
-      }
+      text: "For a firm juggling several CRM tools, seeing which documents are signed versus still pending signature at a glance would save a phone call every time.",
+      persona: "Attorney, solo practice"
     },
     {
       rating: 5,
-      text: "The reporting features have given us incredible insights into our firm's performance. We've been able to identify bottlenecks and optimize our processes, resulting in faster case resolutions.",
-      author: {
-        name: "Jennifer Chen",
-        title: "Operations Manager, Chen Legal",
-        avatar: "https://randomuser.me/api/portraits/women/3.jpg"
-      }
+      text: "Live reporting on active cases, new intakes, and settlement values gives a firm the visibility to spot bottlenecks and speed up case resolutions.",
+      persona: "Operations lead, growing firm"
     },
   ];
 
   return (
     <TestimonialsSection id="testimonials">
       <div className="container">
-        <SectionTitle>What Our Clients Say</SectionTitle>
+        <SectionTitle>Built For Firms Like Yours</SectionTitle>
         <SectionSubtitle>
-          Don't just take our word for it. Here's what law firms using our CRM have to say.
+          Illustrative — demo content. These reflect the workflows this CRM is built to support, not verified customer quotes.
         </SectionSubtitle>
-        
+
         <TestimonialsGrid>
           {testimonialData.map((testimonial, index) => (
             <TestimonialCard key={index}>
@@ -151,12 +128,8 @@ const Testimonials = () => {
               </TestimonialRating>
               <TestimonialText>"{testimonial.text}"</TestimonialText>
               <TestimonialAuthor>
-                <AuthorAvatar>
-                  <img src={testimonial.author.avatar} alt={testimonial.author.name} />
-                </AuthorAvatar>
                 <AuthorInfo>
-                  <AuthorName>{testimonial.author.name}</AuthorName>
-                  <AuthorTitle>{testimonial.author.title}</AuthorTitle>
+                  <AuthorTitle>{testimonial.persona}</AuthorTitle>
                 </AuthorInfo>
               </TestimonialAuthor>
             </TestimonialCard>
