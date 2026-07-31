@@ -162,7 +162,7 @@ const Footer = () => {
         
         <FooterBottom>
           <FooterCopyright>
-            © {new Date().getFullYear()} PersonalInjuryCRM. Made with <FiHeart /> in San Francisco
+            © {new Date().getFullYear()} Valtara Inc. Made with <FiHeart /> in San Francisco
           </FooterCopyright>
           
           <FooterSocial>
